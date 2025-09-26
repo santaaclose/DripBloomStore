@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
 import { useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/loading-skeleton";
@@ -8,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Search } from "lucide-react";
 import { formatPrice } from "@/lib/currency";
 import type { Product } from "@shared/schema";
+import productsData from "@src/data/products.json";   // ✅ грузим готовый JSON
 
 export default function Home() {
   const [, setLocation] = useLocation();
@@ -16,60 +16,37 @@ export default function Home() {
   const [selectedName, setSelectedName] = useState("");
   const [selectedPrice, setSelectedPrice] = useState("");
 
-  // Fetch products
-  const { data: products = [], isLoading } = useQuery<Product[]>({
-    queryKey: ["/api/products"],
-  });
+  // ✅ Берём товары напрямую
+  const products: Product[] = productsData;
+  const isLoading = false;
 
-  // Get all available sizes sorted in ascending order
+  // Все доступные размеры
   const allSizes = Array.from(new Set(products.flatMap(product => product.sizes)))
     .sort((a, b) => parseFloat(a) - parseFloat(b));
 
-  // Get all available ring names
-  const allNames = Array.from(new Set(products.map(product => product.name)))
-    .sort();
+  // Все названия колец
+  const allNames = Array.from(new Set(products.map(product => product.name))).sort();
 
-  // Get all available prices sorted in ascending order
+  // Все цены
   const allPrices = Array.from(new Set(products.map(product => product.price)))
     .sort((a, b) => parseFloat(a) - parseFloat(b));
 
-  // Filter products based on search, size, name, and price
+  // Фильтрация
   const filteredProducts = products.filter(product => {
-    // Search filter
-    if (searchQuery && !product.name.toLowerCase().includes(searchQuery.toLowerCase())) {
-      return false;
-    }
-    
-    // Size filter
-    if (selectedSize && !product.sizes.includes(selectedSize)) {
-      return false;
-    }
-    
-    // Name filter
-    if (selectedName && product.name !== selectedName) {
-      return false;
-    }
-    
-    // Price filter
-    if (selectedPrice && product.price !== selectedPrice) {
-      return false;
-    }
-    
+    if (searchQuery && !product.name.toLowerCase().includes(searchQuery.toLowerCase())) return false;
+    if (selectedSize && !product.sizes.includes(selectedSize)) return false;
+    if (selectedName && product.name !== selectedName) return false;
+    if (selectedPrice && product.price !== selectedPrice) return false;
     return true;
   });
 
-
-  const formatSizes = (sizes: string[]) => {
-    return `Размер: ${sizes.join(' / ')}`;
-  };
+  const formatSizes = (sizes: string[]) => `Размер: ${sizes.join(" / ")}`;
 
   return (
     <div data-testid="page-home">
-      {/* Hero Carousel */}
+      {/* Шапка с каруселью */}
       <section className="mb-6">
-        {!isLoading && products.length > 0 && (
-          <HeroCarousel products={products} />
-        )}
+        {!isLoading && products.length > 0 && <HeroCarousel products={products} />}
         {isLoading && (
           <div className="hero-section rounded-b-[40px] px-4 py-8 bg-gradient-to-br from-pink-50 via-purple-50 to-white">
             <div className="container mx-auto">
@@ -83,10 +60,9 @@ export default function Home() {
         )}
       </section>
 
-      {/* Filters */}
+      {/* Фильтры */}
       <section className="px-4 mb-6">
         <div className="container mx-auto space-y-4">
-          {/* Search Filter */}
           <div className="relative">
             <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
             <Input
@@ -98,10 +74,8 @@ export default function Home() {
               data-testid="input-search"
             />
           </div>
-          
-          {/* Individual Filters */}
+
           <div className="flex gap-3 flex-wrap">
-            {/* Size Filter */}
             <select
               value={selectedSize}
               onChange={(e) => setSelectedSize(e.target.value)}
@@ -110,13 +84,10 @@ export default function Home() {
             >
               <option value="">Все размеры</option>
               {allSizes.map(size => (
-                <option key={size} value={size}>
-                  {size}
-                </option>
+                <option key={size} value={size}>{size}</option>
               ))}
             </select>
-            
-            {/* Name Filter */}
+
             <select
               value={selectedName}
               onChange={(e) => setSelectedName(e.target.value)}
@@ -125,13 +96,10 @@ export default function Home() {
             >
               <option value="">Все кольца</option>
               {allNames.map(name => (
-                <option key={name} value={name}>
-                  {name}
-                </option>
+                <option key={name} value={name}>{name}</option>
               ))}
             </select>
-            
-            {/* Price Filter */}
+
             <select
               value={selectedPrice}
               onChange={(e) => setSelectedPrice(e.target.value)}
@@ -140,16 +108,14 @@ export default function Home() {
             >
               <option value="">Все цены</option>
               {allPrices.map(price => (
-                <option key={price} value={price}>
-                  {formatPrice(price)}
-                </option>
+                <option key={price} value={price}>{formatPrice(price)}</option>
               ))}
             </select>
           </div>
         </div>
       </section>
 
-      {/* Product Grid */}
+      {/* Сетка товаров */}
       <section className="px-4 mb-20">
         <div className="container mx-auto">
           {isLoading ? (
@@ -180,48 +146,26 @@ export default function Home() {
                     className="w-full h-32 md:h-40 object-cover flex-shrink-0"
                     data-testid={`img-product-${product.id}`}
                   />
-                  <div className="flex flex-col flex-grow" style={{ padding: '8px 12px 16px' }}>
+                  <div className="flex flex-col flex-grow p-3">
                     <div className="flex-grow space-y-1">
-                      <h3 
-                        className="font-medium text-card-foreground leading-tight product-card-text-shadow"
-                        data-testid={`text-product-name-${product.id}`}
+                      <h3
+                        className="font-medium text-card-foreground leading-tight"
                         style={{
-                          display: '-webkit-box',
+                          display: "-webkit-box",
                           WebkitLineClamp: 2,
-                          WebkitBoxOrient: 'vertical',
-                          overflow: 'hidden',
-                          textOverflow: 'ellipsis',
-                          lineHeight: '1.3',
-                          textShadow: '0 1px 2px rgba(255, 255, 255, 0.8)',
-                          minHeight: '2.6em' // Ensure consistent height for 2 lines
+                          WebkitBoxOrient: "vertical",
+                          overflow: "hidden",
+                          textOverflow: "ellipsis",
+                          lineHeight: "1.3",
+                          minHeight: "2.6em"
                         }}
                       >
                         {product.name}
                       </h3>
-                      <p 
-                        className="text-primary font-semibold product-card-text-shadow" 
-                        data-testid={`text-product-price-${product.id}`}
-                        style={{
-                          textShadow: '0 1px 2px rgba(255, 255, 255, 0.6)',
-                          lineHeight: '1.2'
-                        }}
-                      >
+                      <p className="text-primary font-semibold">
                         {formatPrice(product.price)}
                       </p>
-                      <p 
-                        className="text-xs text-muted-foreground product-card-text-shadow" 
-                        data-testid={`text-product-sizes-${product.id}`}
-                        style={{
-                          display: '-webkit-box',
-                          WebkitLineClamp: 1,
-                          WebkitBoxOrient: 'vertical',
-                          overflow: 'hidden',
-                          textOverflow: 'ellipsis',
-                          textShadow: '0 1px 1px rgba(255, 255, 255, 0.7)',
-                          lineHeight: '1.2',
-                          marginBottom: '12px'
-                        }}
-                      >
+                      <p className="text-xs text-muted-foreground">
                         {formatSizes(product.sizes)}
                       </p>
                     </div>
@@ -230,10 +174,6 @@ export default function Home() {
                       onClick={(e) => {
                         e.stopPropagation();
                         setLocation(`/product/${product.id}`);
-                      }}
-                      data-testid={`button-view-details-${product.id}`}
-                      style={{
-                        minHeight: '36px' // Ensure consistent button height
                       }}
                     >
                       Подробнее
@@ -245,7 +185,7 @@ export default function Home() {
           )}
 
           {!isLoading && filteredProducts.length === 0 && (
-            <div className="text-center py-12" data-testid="empty-products">
+            <div className="text-center py-12">
               <p className="text-muted-foreground">Товары в этой категории не найдены.</p>
             </div>
           )}
