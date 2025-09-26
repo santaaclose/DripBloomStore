@@ -1,0 +1,156 @@
+[
+  {
+    "id": "ice-drop-green",
+    "name": "ICE & DROP Зелёный",
+    "price": 55.56,
+    "sizes": ["17", "17.5", "18", "19.5"],
+    "images": ["/images/rings/ICE_DROP_GREEN.jpg"],
+    "cover_image": "/images/rings/ICE_DROP_GREEN.jpg",
+    "category": "rings",
+    "available": true,
+    "description": "Кольцо ICE & DROP из зелёного стекла. Живое и уникальное."
+  },
+  {
+    "id": "ice-drop-clear",
+    "name": "ICE & DROP Прозрачное",
+    "price": 55.56,
+    "sizes": ["13.5", "14.5", "15", "15.5", "16", "16.5", "17", "17.5"],
+    "images": ["/images/rings/ICE_DROP_TRANS.jpg"],
+    "cover_image": "/images/rings/ICE_DROP_TRANS.jpg",
+    "category": "rings",
+    "available": true,
+    "description": "Чистое прозрачное кольцо ICE & DROP."
+  },
+  {
+    "id": "ice-drop-pink",
+    "name": "ICE & DROP Розовый",
+    "price": 55.56,
+    "sizes": ["15", "15.5", "16", "16.5", "17.5"],
+    "images": ["/images/rings/ICE_DROP_PINK.jpg"],
+    "cover_image": "/images/rings/ICE_DROP_PINK.jpg",
+    "category": "rings",
+    "available": true,
+    "description": "Розовое кольцо ICE & DROP."
+  },
+  {
+    "id": "ice-drop-purple",
+    "name": "ICE & DROP Сиреневый",
+    "price": 55.56,
+    "sizes": ["13.5", "14.5", "15.5", "16", "16.5", "17.5"],
+    "images": ["/images/rings/ICE_DROP_PURPLE.jpg"],
+    "cover_image": "/images/rings/ICE_DROP_PURPLE.jpg",
+    "category": "rings",
+    "available": true,
+    "description": "Сиреневое кольцо ICE & DROP."
+  },
+  {
+    "id": "ice-drop-transblack",
+    "name": "ICE & DROP Черный прозрачный",
+    "price": 55.56,
+    "sizes": ["15.5", "16.5", "17", "17.5", "18.5"],
+    "images": ["/images/rings/ICE_DROP_TRANSBLACK.jpg"],
+    "cover_image": "/images/rings/ICE_DROP_TRANSBLACK.jpg",
+    "category": "rings",
+    "available": true,
+    "description": "Черное прозрачное кольцо ICE & DROP."
+  },
+  {
+    "id": "inside-trans",
+    "name": "INSIDE Прозрачнй",
+    "price": 61.11,
+    "sizes": ["17", "17.5"],
+    "images": ["/images/rings/INSIDE_TRANS.jpg"],
+    "cover_image": "/images/rings/INSIDE_TRANS.jpg",
+    "category": "rings",
+    "available": true,
+    "description": "Прозрачное кольцо INSIDE."
+  },
+  {
+    "id": "inside-pink",
+    "name": "INSIDE Розовый",
+    "price": 61.11,
+    "sizes": ["15.5", "16"],
+    "images": ["/images/rings/INSIDE_PINK.jpg"],
+    "cover_image": "/images/rings/INSIDE_PINK.jpg",
+    "category": "rings",
+    "available": true,
+    "description": "Розовое кольцо INSIDE."
+  },
+  {
+    "id": "inside-trans-black",
+    "name": "INSIDE Прозрачный с черным",
+    "price": 61.11,
+    "sizes": ["17.5"],
+    "images": ["/images/rings/INSIDE_TRANSBLACK.jpg"],
+    "cover_image": "/images/rings/INSIDE_TRANSBLACK.jpg",
+    "category": "rings",
+    "available": true,
+    "description": "Прозрачное с черным кольцо INSIDE."
+  },
+  {
+    "id": "inside-pink-green",
+    "name": "INSIDE Розовое с зелёным",
+    "price": 72.22,
+    "sizes": ["17.5"],
+    "images": ["/images/rings/INSIDE_PINK_GREEN.jpg"],
+    "cover_image": "/images/rings/INSIDE_PINK_GREEN.jpg",
+    "category": "rings",
+    "available": true,
+    "description": "Розовое с зелёным кольцо INSIDE."
+  },
+  {
+    "id": "inside-pink-black",
+    "name": "INSIDE Розовое с черным",
+    "price": 72.22,
+    "sizes": ["17", "18"],
+    "images": ["/images/rings/INSIDE_PINK_BLACK.jpg"],
+    "cover_image": "/images/rings/INSIDE_PINK_BLACK.jpg",
+    "category": "rings",
+    "available": true,
+    "description": "Розовое с черным кольцо INSIDE."
+  },
+  {
+    "id": "thorn-pink-green",
+    "name": "THORN Розовое с зелёным",
+    "price": 72.22,
+    "sizes": ["15", "16", "17", "17.5"],
+    "images": ["/images/rings/THORN_PINK_GREEN.jpg"],
+    "cover_image": "/images/rings/THORN_PINK_GREEN.jpg",
+    "category": "rings",
+    "available": true,
+    "description": "Кольцо THORN розовое с зелёным."
+  },
+  {
+    "id": "thorn-white-green",
+    "name": "THORN Белое с зелёным",
+    "price": 72.22,
+    "sizes": ["15.5", "16"],
+    "images": ["/images/rings/THORN_WHITE_GREEN.jpg"],
+    "cover_image": "/images/rings/THORN_WHITE_GREEN.jpg",
+    "category": "rings",
+    "available": true,
+    "description": "Кольцо THORN белое с зелёным."
+  },
+  {
+    "id": "thorn-trans-black",
+    "name": "THORN Прозрачный с черным",
+    "price": 72.22,
+    "sizes": ["16.5", "17"],
+    "images": ["/images/rings/THORN_TRANSBLACK.jpg"],
+    "cover_image": "/images/rings/THORN_TRANSBLACK.jpg",
+    "category": "rings",
+    "available": true,
+    "description": "Кольцо THORN прозрачный с черным."
+  },
+  {
+    "id": "thorn-black-pink",
+    "name": "THORN Розовый с черным",
+    "price": 72.22,
+    "sizes": ["17.5"],
+    "images": ["/images/rings/THORN_BLACK_PINK.jpg"],
+    "cover_image": "/images/rings/THORN_BLACK_PINK.jpg",
+    "category": "rings",
+    "available": true,
+    "description": "Кольцо THORN розовый с черным."
+  }
+]

@@ -1,0 +1,288 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Poppins:wght@300;400;500;600;700;800;900&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: hsl(10, 15%, 98%); /* Very light pink-white background */
+  --foreground: hsl(0, 0%, 20%); /* Soft dark gray for text */
+  --card: hsl(0, 0%, 100%); /* Pure white cards */
+  --card-foreground: hsl(0, 0%, 20%);
+  --popover: hsl(0, 0%, 100%);
+  --popover-foreground: hsl(0, 0%, 20%);
+  --primary: hsl(340, 60%, 65%); /* Deeper pink for better contrast */
+  --primary-foreground: hsl(0, 0%, 100%);
+  --secondary: hsl(120, 25%, 85%); /* Soft green accent */
+  --secondary-foreground: hsl(0, 0%, 20%);
+  --muted: hsl(10, 15%, 95%); /* Very light pink-tinted muted */
+  --muted-foreground: hsl(0, 0%, 45%); /* Softer gray */
+  --accent: hsl(340, 25%, 90%); /* Very light pink accent */
+  --accent-foreground: hsl(0, 0%, 20%);
+  --destructive: hsl(356.3, 70%, 60%); /* Softer red */
+  --destructive-foreground: hsl(0, 0%, 100%);
+  --border: hsl(340, 15%, 90%); /* Light pink borders */
+  --input: hsl(340, 15%, 95%); /* Light pink inputs */
+  --ring: hsl(340, 35%, 82%); /* Soft pink focus ring */
+  --chart-1: hsl(203.9, 88.3%, 53.1%);
+  --chart-2: hsl(159.8, 100%, 36.1%);
+  --chart-3: hsl(42.0, 92.8%, 56.3%);
+  --chart-4: hsl(147.1, 78.5%, 42.0%);
+  --chart-5: hsl(341.5, 75.2%, 51.0%);
+  --sidebar: hsl(0, 0%, 99%);
+  --sidebar-foreground: hsl(240, 10%, 18%);
+  --sidebar-primary: hsl(320, 25%, 75%);
+  --sidebar-primary-foreground: hsl(0, 0%, 100%);
+  --sidebar-accent: hsl(340, 20%, 88%);
+  --sidebar-accent-foreground: hsl(240, 10%, 18%);
+  --sidebar-border: hsl(24, 6%, 85%);
+  --sidebar-ring: hsl(320, 25%, 75%);
+  --font-sans: 'Poppins', 'Inter', system-ui, sans-serif;
+  --font-serif: 'Playfair Display', Georgia, serif;
+  --font-mono: 'JetBrains Mono', Menlo, monospace;
+  --radius: 1.25rem;
+  --shadow-2xs: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-xs: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05), 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+  --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+  --shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  --tracking-normal: 0em;
+  --spacing: 0.25rem;
+}
+
+.dark {
+  --background: hsl(0, 0%, 0%);
+  --foreground: hsl(200, 6.7%, 91.2%);
+  --card: hsl(228, 9.8%, 10%);
+  --card-foreground: hsl(0, 0%, 85.1%);
+  --popover: hsl(0, 0%, 0%);
+  --popover-foreground: hsl(200, 6.7%, 91.2%);
+  --primary: hsl(320, 25%, 75%);
+  --primary-foreground: hsl(0, 0%, 100%);
+  --secondary: hsl(195, 15.4%, 94.9%);
+  --secondary-foreground: hsl(240, 10%, 18%);
+  --muted: hsl(0, 0%, 9.4%);
+  --muted-foreground: hsl(210, 3.4%, 46.3%);
+  --accent: hsl(205.7, 70%, 7.8%);
+  --accent-foreground: hsl(320, 25%, 75%);
+  --destructive: hsl(356.3, 90.6%, 54.3%);
+  --destructive-foreground: hsl(0, 0%, 100%);
+  --border: hsl(210, 5.3%, 14.9%);
+  --input: hsl(207.7, 27.7%, 18.4%);
+  --ring: hsl(320, 25%, 75%);
+  --chart-1: hsl(203.9, 88.3%, 53.1%);
+  --chart-2: hsl(159.8, 100%, 36.1%);
+  --chart-3: hsl(42.0, 92.8%, 56.3%);
+  --chart-4: hsl(147.1, 78.5%, 42.0%);
+  --chart-5: hsl(341.5, 75.2%, 51.0%);
+  --sidebar: hsl(228, 9.8%, 10%);
+  --sidebar-foreground: hsl(0, 0%, 85.1%);
+  --sidebar-primary: hsl(320, 25%, 75%);
+  --sidebar-primary-foreground: hsl(0, 0%, 100%);
+  --sidebar-accent: hsl(205.7, 70%, 7.8%);
+  --sidebar-accent-foreground: hsl(320, 25%, 75%);
+  --sidebar-border: hsl(205.7, 15.8%, 26.1%);
+  --sidebar-ring: hsl(320, 25%, 75%);
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply font-sans antialiased bg-background text-foreground;
+    background: linear-gradient(135deg, #f1e9e1 0%, #ffffff 100%);
+    min-height: 100vh;
+  }
+}
+
+@layer components {
+  .glass-effect {
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+  }
+
+  .product-card {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+  }
+
+  .product-card:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25), 0 12px 24px -8px rgba(0, 0, 0, 0.2);
+  }
+
+  .product-card:active {
+    transform: translateY(-4px) scale(1.01);
+    transition-duration: 0.15s;
+  }
+
+  .category-tab {
+    transition: all 0.2s ease;
+  }
+
+  .category-tab.active {
+    background: linear-gradient(135deg, #f0d4e8 0%, #dcc2ed 100%);
+    color: hsl(340, 60%, 35%); /* Better contrast for active tabs */
+    font-weight: 600;
+    border: 1px solid rgba(225, 174, 206, 0.3);
+  }
+
+  .floating-nav {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+  }
+
+  .hero-section {
+    background: linear-gradient(135deg, rgba(248, 231, 243, 0.4) 0%, rgba(232, 213, 242, 0.4) 100%);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-section::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+    animation: float 6s ease-in-out infinite;
+  }
+
+  @keyframes float {
+    0%, 100% {
+      transform: translateY(0px) rotate(0deg);
+    }
+    50% {
+      transform: translateY(-10px) rotate(1deg);
+    }
+  }
+
+  .btn-primary {
+    background: linear-gradient(135deg, #e0b6d5 0%, #cc9bdb 100%);
+    color: hsl(340, 85%, 20%); /* Darker text for maximum contrast */
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.20);
+    font-weight: 700; /* Bolder font weight */
+    letter-spacing: 0.025em;
+    border: 1px solid rgba(200, 130, 180, 0.5);
+    text-shadow: 0 1px 2px rgba(255, 255, 255, 0.3); /* Subtle light text shadow for more contrast */
+  }
+
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.25), 0 8px 16px rgba(0, 0, 0, 0.20);
+    background: linear-gradient(135deg, #d9a8ce 0%, #c490d4 100%);
+    color: hsl(340, 90%, 18%);
+    border-color: rgba(200, 130, 180, 0.7);
+  }
+
+  .btn-primary:active {
+    transform: translateY(-1px);
+    transition-duration: 0.1s;
+    color: hsl(340, 95%, 15%);
+    background: linear-gradient(135deg, #d29bc1 0%, #bc87cd 100%);
+  }
+
+  .nav-item.active {
+    color: hsl(var(--primary));
+    font-weight: 600;
+  }
+
+  .image-high-quality {
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+    filter: contrast(1.05) brightness(1.02);
+  }
+
+  .text-shadow {
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  .glass-morphism {
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(20px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+  }
+
+  .spacing-8 {
+    gap: 0.5rem; /* 8px */
+  }
+
+  .spacing-16 {
+    gap: 1rem; /* 16px */
+  }
+
+  .spacing-24 {
+    gap: 1.5rem; /* 24px */
+  }
+
+  /* Enhanced text shadows for better readability */
+  .hero-text-shadow {
+    text-shadow: 
+      0 2px 4px rgba(0, 0, 0, 0.8),
+      0 1px 2px rgba(255, 255, 255, 0.2),
+      0 4px 8px rgba(0, 0, 0, 0.3);
+  }
+
+  .product-card-text-shadow {
+    text-shadow: 
+      0 1px 2px rgba(255, 255, 255, 0.8),
+      0 1px 1px rgba(0, 0, 0, 0.1);
+  }
+
+  /* Ensure line clamping works across browsers */
+  .line-clamp-1 {
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* Enhanced gradient overlays for hero carousel */
+  .hero-gradient-overlay {
+    background: linear-gradient(
+      to top,
+      rgba(0, 0, 0, 0.8) 0%,
+      rgba(0, 0, 0, 0.6) 30%,
+      rgba(0, 0, 0, 0.4) 50%,
+      rgba(0, 0, 0, 0.2) 70%,
+      transparent 100%
+    );
+  }
+
+  /* Ensure product cards maintain consistent spacing */
+  .product-card-content {
+    padding: 8px 12px 16px;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+
+  /* Better text contrast on cards */
+  .product-card h3 {
+    color: hsl(340, 60%, 25%);
+  }
+
+  .product-card p {
+    color: hsl(340, 40%, 35%);
+  }
+}
