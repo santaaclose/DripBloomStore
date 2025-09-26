@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
 import { useParams, useLocation } from "wouter";
 import { ArrowLeft, Heart, ShoppingCart, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -10,6 +9,7 @@ import { useCart } from "@/hooks/use-cart";
 import { useFavorites } from "@/hooks/use-favorites";
 import { formatPrice } from "@/lib/currency";
 import type { Product } from "@shared/schema";
+import productsData from "../../data/products.json"; // ✅ берём JSON напрямую
 
 export default function Product() {
   const { id } = useParams();
@@ -21,14 +21,14 @@ export default function Product() {
   const { addToCart } = useCart();
   const { isInFavorites, toggleFavorite, isTogglingFavorite } = useFavorites();
 
-
-  const { data: product, isLoading } = useQuery<Product>({
-    queryKey: ["/api/products", id],
-  });
+  // ✅ Берём все товары и ищем нужный
+  const products: Product[] = productsData;
+  const product = products.find((p) => p.id === id);
+  const isLoading = false;
 
   const handleAddToCart = async () => {
     if (!product) return;
-    
+
     if (!selectedSize) {
       toast({
         title: "Пожалуйста, выберите размер",
@@ -44,7 +44,6 @@ export default function Product() {
         size: selectedSize,
         quantity: 1,
       });
-      
       setShowAddToCartModal(true);
     } catch (error) {
       toast({
@@ -98,7 +97,7 @@ export default function Product() {
   return (
     <div className="px-4 py-6" data-testid="page-product">
       <div className="container mx-auto max-w-md">
-        {/* Back Button */}
+        {/* Назад */}
         <button
           onClick={() => setLocation("/")}
           className="flex items-center space-x-2 text-muted-foreground mb-6"
@@ -108,7 +107,7 @@ export default function Product() {
           <span>Назад</span>
         </button>
 
-        {/* Product Images Carousel */}
+        {/* Фото товара */}
         <div className="bg-card rounded-[20px] shadow-lg overflow-hidden mb-6">
           <img
             src={product.images[selectedImageIndex]}
@@ -116,7 +115,7 @@ export default function Product() {
             className="w-full h-64 object-cover"
             data-testid="img-product-main"
           />
-          
+
           <div className="flex space-x-2 p-4">
             {product.images.map((image, index) => (
               <img
@@ -124,7 +123,9 @@ export default function Product() {
                 src={image}
                 alt={`${product.name} view ${index + 1}`}
                 className={`w-16 h-16 object-cover rounded-lg cursor-pointer transition-opacity ${
-                  selectedImageIndex === index ? "opacity-100" : "opacity-60 hover:opacity-100"
+                  selectedImageIndex === index
+                    ? "opacity-100"
+                    : "opacity-60 hover:opacity-100"
                 }`}
                 onClick={() => setSelectedImageIndex(index)}
                 data-testid={`img-product-thumbnail-${index}`}
@@ -133,15 +134,18 @@ export default function Product() {
           </div>
         </div>
 
-        {/* Product Info */}
+        {/* Инфо о товаре */}
         <div className="bg-card rounded-[20px] shadow-lg p-6 mb-6">
           <h1 className="text-2xl font-bold text-card-foreground mb-2" data-testid="text-product-name">
             {product.name}
           </h1>
-          
+
           <div className="mb-6">
             <h3 className="font-semibold text-card-foreground mb-2">Описание</h3>
-            <p className="text-muted-foreground text-sm leading-relaxed" data-testid="text-product-description">
+            <p
+              className="text-muted-foreground text-sm leading-relaxed"
+              data-testid="text-product-description"
+            >
               {product.description}
             </p>
           </div>
@@ -181,14 +185,20 @@ export default function Product() {
               disabled={isTogglingFavorite}
               data-testid="button-add-to-favorites"
             >
-              <Heart className={`mr-2 h-4 w-4 ${product && isInFavorites(product.id) ? 'fill-current' : ''}`} />
-              {product && isInFavorites(product.id) ? 'Удалить из избранного' : 'Добавить в избранное'}
+              <Heart
+                className={`mr-2 h-4 w-4 ${
+                  product && isInFavorites(product.id) ? "fill-current" : ""
+                }`}
+              />
+              {product && isInFavorites(product.id)
+                ? "Удалить из избранного"
+                : "Добавить в избранное"}
             </Button>
           </div>
         </div>
       </div>
 
-      {/* Add to Cart Success Modal */}
+      {/* Модалка «добавлено в корзину» */}
       <Dialog open={showAddToCartModal} onOpenChange={setShowAddToCartModal}>
         <DialogContent className="max-w-md mx-auto">
           <DialogHeader className="text-center">
@@ -201,10 +211,10 @@ export default function Product() {
               Товар добавлен в корзину! 🛍️
             </DialogTitle>
             <DialogDescription className="text-center text-muted-foreground">
-              {product && `${product.name} (${selectedSize}) добавлен в вашу корзину. Доставка бесплатная!`}
+              {product && `${product.name} (${selectedSize}) добавлен в вашу корзину.`}
             </DialogDescription>
           </DialogHeader>
-          
+
           <div className="space-y-3 mt-6">
             <Button
               className="w-full py-3 rounded-[16px] font-semibold"
