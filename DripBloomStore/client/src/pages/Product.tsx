@@ -8,9 +8,9 @@ import { useCart } from "@/hooks/use-cart";
 import { useFavorites } from "@/hooks/use-favorites";
 import { formatPrice } from "@/lib/currency";
 import type { Product } from "@shared/schema";
-import productsData from "../../data/products.json";  // ✅ грузим локальный JSON
+import productsData from "../../data/products.json"; // ✅ грузим локальный JSON
 
-export default function ProductPage() {
+export default function Product() {
   const { id } = useParams();
   const [, setLocation] = useLocation();
   const [selectedSize, setSelectedSize] = useState("");
@@ -20,21 +20,12 @@ export default function ProductPage() {
   const { addToCart } = useCart();
   const { isInFavorites, toggleFavorite, isTogglingFavorite } = useFavorites();
 
-  // ✅ ищем товар по id в products.json
-  const product: Product | undefined = (productsData as Product[]).find((p) => p.id === id);
-
-  if (!product) {
-    return (
-      <div className="px-4 py-6 text-center">
-        <p>Товар не найден</p>
-        <Button onClick={() => setLocation("/")} className="mt-4">
-          Вернуться домой
-        </Button>
-      </div>
-    );
-  }
+  // ✅ ищем нужный товар прямо в JSON
+  const product = (productsData as Product[]).find((p) => p.id === id);
 
   const handleAddToCart = async () => {
+    if (!product) return;
+
     if (!selectedSize) {
       toast({
         title: "Пожалуйста, выберите размер",
@@ -44,19 +35,29 @@ export default function ProductPage() {
       return;
     }
 
-    await addToCart({ productId: product.id, size: selectedSize, quantity: 1 });
+    await addToCart({
+      productId: product.id,
+      size: selectedSize,
+      quantity: 1,
+    });
+
     setShowAddToCartModal(true);
   };
+
+  if (!product) {
+    return (
+      <div className="px-4 py-6 text-center">
+        <p>Товар не найден</p>
+        <Button onClick={() => setLocation("/")}>Вернуться домой</Button>
+      </div>
+    );
+  }
 
   return (
     <div className="px-4 py-6">
       <div className="container mx-auto max-w-md">
-        <button
-          onClick={() => setLocation("/")}
-          className="flex items-center space-x-2 text-muted-foreground mb-6"
-        >
-          <ArrowLeft className="h-5 w-5" />
-          <span>Назад</span>
+        <button onClick={() => setLocation("/")} className="flex items-center space-x-2 mb-6">
+          <ArrowLeft className="h-5 w-5" /> <span>Назад</span>
         </button>
 
         <div className="bg-card rounded-[20px] shadow-lg overflow-hidden mb-6">
@@ -66,15 +67,15 @@ export default function ProductPage() {
             className="w-full h-64 object-cover"
           />
           <div className="flex space-x-2 p-4">
-            {product.images.map((image, index) => (
+            {product.images.map((img, idx) => (
               <img
-                key={index}
-                src={image}
-                alt={`${product.name} ${index + 1}`}
+                key={idx}
+                src={img}
+                alt={product.name}
                 className={`w-16 h-16 object-cover rounded-lg cursor-pointer ${
-                  selectedImageIndex === index ? "opacity-100" : "opacity-60 hover:opacity-100"
+                  selectedImageIndex === idx ? "opacity-100" : "opacity-50 hover:opacity-100"
                 }`}
-                onClick={() => setSelectedImageIndex(index)}
+                onClick={() => setSelectedImageIndex(idx)}
               />
             ))}
           </div>
@@ -82,83 +83,56 @@ export default function ProductPage() {
 
         <div className="bg-card rounded-[20px] shadow-lg p-6">
           <h1 className="text-2xl font-bold mb-2">{product.name}</h1>
-          <p className="mb-4">{product.description}</p>
-          <p className="text-primary font-semibold text-lg mb-6">{formatPrice(product.price)}</p>
+          <p className="text-primary font-semibold mb-4">{formatPrice(product.price)}</p>
+          <p className="text-muted-foreground mb-6">{product.description}</p>
 
-          <h3 className="font-semibold mb-2">Размер</h3>
-          <div className="grid grid-cols-4 gap-2 mb-6">
-            {product.sizes.map((size) => (
-              <button
-                key={size}
-                onClick={() => setSelectedSize(size)}
-                className={`border-2 rounded-lg py-2 px-3 text-sm font-medium ${
-                  selectedSize === size
-                    ? "border-primary bg-primary text-primary-foreground"
-                    : "border-border hover:border-primary"
-                }`}
-              >
-                {size}
-              </button>
-            ))}
+          <div className="mb-6">
+            <h3 className="font-semibold mb-3">Размер</h3>
+            <div className="grid grid-cols-4 gap-2">
+              {product.sizes.map((size) => (
+                <button
+                  key={size}
+                  className={`border-2 rounded-lg py-2 px-3 ${
+                    selectedSize === size
+                      ? "border-primary bg-primary text-primary-foreground"
+                      : "border-border hover:border-primary"
+                  }`}
+                  onClick={() => setSelectedSize(size)}
+                >
+                  {size}
+                </button>
+              ))}
+            </div>
           </div>
 
-          <div className="space-y-3">
-            <Button
-              className="btn-primary w-full py-4 rounded-[16px] font-semibold text-lg"
-              onClick={handleAddToCart}
-            >
-              Добавить в корзину
-            </Button>
-            <Button
-              variant="outline"
-              className="w-full py-4 rounded-[16px] font-semibold text-lg border-2 border-primary text-primary hover:bg-primary hover:text-primary-foreground"
-              onClick={() => toggleFavorite(product.id)}
-              disabled={isTogglingFavorite}
-            >
-              <Heart
-                className={`mr-2 h-4 w-4 ${isInFavorites(product.id) ? "fill-current" : ""}`}
-              />
-              {isInFavorites(product.id) ? "Удалить из избранного" : "Добавить в избранное"}
-            </Button>
-          </div>
+          <Button className="btn-primary w-full mb-3" onClick={handleAddToCart}>
+            Добавить в корзину
+          </Button>
+          <Button
+            variant="outline"
+            className="w-full border-2 border-primary text-primary"
+            onClick={() => toggleFavorite(product.id)}
+            disabled={isTogglingFavorite}
+          >
+            <Heart
+              className={`mr-2 h-4 w-4 ${isInFavorites(product.id) ? "fill-current" : ""}`}
+            />
+            {isInFavorites(product.id) ? "Убрать из избранного" : "Добавить в избранное"}
+          </Button>
         </div>
       </div>
 
       <Dialog open={showAddToCartModal} onOpenChange={setShowAddToCartModal}>
         <DialogContent className="max-w-md mx-auto">
           <DialogHeader className="text-center">
-            <div className="flex justify-center mb-4">
-              <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center">
-                <ShoppingCart className="h-8 w-8 text-green-600" />
-              </div>
-            </div>
             <DialogTitle>Товар добавлен в корзину! 🛍️</DialogTitle>
             <DialogDescription>
-              {`${product.name} (${selectedSize}) добавлен в вашу корзину.`}
+              {product.name} ({selectedSize}) добавлен в корзину.
             </DialogDescription>
           </DialogHeader>
-          <div className="space-y-3 mt-6">
-            <Button
-              variant="outline"
-              className="w-full py-3 rounded-[16px] font-semibold"
-              onClick={() => {
-                setShowAddToCartModal(false);
-                setLocation("/");
-              }}
-            >
-              Продолжить покупки
-            </Button>
-            <Button
-              className="btn-primary w-full py-3 rounded-[16px] font-semibold"
-              onClick={() => {
-                setShowAddToCartModal(false);
-                setLocation("/cart");
-              }}
-            >
-              Оформить заказ
-              <ArrowRight className="ml-2 h-4 w-4" />
-            </Button>
-          </div>
+          <Button onClick={() => setLocation("/cart")} className="btn-primary w-full mt-4">
+            Перейти в корзину
+          </Button>
         </DialogContent>
       </Dialog>
     </div>
