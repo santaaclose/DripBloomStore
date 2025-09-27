@@ -8,7 +8,7 @@ import { useCart } from "@/hooks/use-cart";
 import { useFavorites } from "@/hooks/use-favorites";
 import { formatPrice } from "@/lib/currency";
 import type { Product } from "@shared/schema";
-import productsData from "../../data/products.json"; // ✅ грузим локальный JSON
+import productsData from "/products.json";
 
 export default function Product() {
   const { id } = useParams();

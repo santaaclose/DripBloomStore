@@ -7,8 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Search } from "lucide-react";
 import { formatPrice } from "@/lib/currency";
 import type { Product } from "@shared/schema";
-import productsData from "../../../src/data/products.json";
-
+import productsData from "/products.json";
 
 export default function Home() {
   const [, setLocation] = useLocation();
