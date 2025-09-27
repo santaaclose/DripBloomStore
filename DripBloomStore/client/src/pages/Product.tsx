@@ -8,10 +8,11 @@ import { useCart } from "@/hooks/use-cart";
 import { useFavorites } from "@/hooks/use-favorites";
 import { formatPrice } from "@/lib/currency";
 import type { Product } from "@shared/schema";
+// ✅ грузим данные напрямую из public/products.json
 import productsData from "/products.json";
 
 export default function Product() {
-  const { id } = useParams();
+  const { id } = useParams();                        // id из адресной строки
   const [, setLocation] = useLocation();
   const [selectedSize, setSelectedSize] = useState("");
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
@@ -20,8 +21,9 @@ export default function Product() {
   const { addToCart } = useCart();
   const { isInFavorites, toggleFavorite, isTogglingFavorite } = useFavorites();
 
-  // ✅ ищем нужный товар прямо в JSON
-  const product = (productsData as Product[]).find((p) => p.id === id);
+  // ✅ ищем товар прямо в JSON
+  const products: Product[] = productsData as Product[];
+  const product = products.find((p) => p.id === id);
 
   const handleAddToCart = async () => {
     if (!product) return;
@@ -44,6 +46,7 @@ export default function Product() {
     setShowAddToCartModal(true);
   };
 
+  // 👉 если товар не найден
   if (!product) {
     return (
       <div className="px-4 py-6 text-center">
@@ -56,10 +59,17 @@ export default function Product() {
   return (
     <div className="px-4 py-6">
       <div className="container mx-auto max-w-md">
-        <button onClick={() => setLocation("/")} className="flex items-center space-x-2 mb-6">
-          <ArrowLeft className="h-5 w-5" /> <span>Назад</span>
+
+        {/* Кнопка назад */}
+        <button
+          onClick={() => setLocation("/")}
+          className="flex items-center space-x-2 mb-6 text-muted-foreground"
+        >
+          <ArrowLeft className="h-5 w-5" />
+          <span>Назад</span>
         </button>
 
+        {/* Фото товара */}
         <div className="bg-card rounded-[20px] shadow-lg overflow-hidden mb-6">
           <img
             src={product.images[selectedImageIndex]}
@@ -81,6 +91,7 @@ export default function Product() {
           </div>
         </div>
 
+        {/* Информация о товаре */}
         <div className="bg-card rounded-[20px] shadow-lg p-6">
           <h1 className="text-2xl font-bold mb-2">{product.name}</h1>
           <p className="text-primary font-semibold mb-4">{formatPrice(product.price)}</p>
@@ -108,6 +119,7 @@ export default function Product() {
           <Button className="btn-primary w-full mb-3" onClick={handleAddToCart}>
             Добавить в корзину
           </Button>
+
           <Button
             variant="outline"
             className="w-full border-2 border-primary text-primary"
@@ -122,6 +134,7 @@ export default function Product() {
         </div>
       </div>
 
+      {/* Модалка добавления в корзину */}
       <Dialog open={showAddToCartModal} onOpenChange={setShowAddToCartModal}>
         <DialogContent className="max-w-md mx-auto">
           <DialogHeader className="text-center">
@@ -132,6 +145,7 @@ export default function Product() {
           </DialogHeader>
           <Button onClick={() => setLocation("/cart")} className="btn-primary w-full mt-4">
             Перейти в корзину
+            <ArrowRight className="ml-2 h-4 w-4" />
           </Button>
         </DialogContent>
       </Dialog>
