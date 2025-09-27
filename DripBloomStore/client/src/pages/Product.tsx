@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams, useLocation } from "wouter";
 import { ArrowLeft, Heart, ShoppingCart, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -8,22 +8,30 @@ import { useCart } from "@/hooks/use-cart";
 import { useFavorites } from "@/hooks/use-favorites";
 import { formatPrice } from "@/lib/currency";
 import type { Product } from "@shared/schema";
-// ✅ грузим данные напрямую из public/products.json
-import productsData from "/products.json";
 
 export default function Product() {
-  const { id } = useParams();                        // id из адресной строки
+  const { id } = useParams();
   const [, setLocation] = useLocation();
   const [selectedSize, setSelectedSize] = useState("");
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [showAddToCartModal, setShowAddToCartModal] = useState(false);
+  const [product, setProduct] = useState<Product | null>(null);
+  const [loading, setLoading] = useState(true);
   const { toast } = useToast();
   const { addToCart } = useCart();
   const { isInFavorites, toggleFavorite, isTogglingFavorite } = useFavorites();
 
-  // ✅ ищем товар прямо в JSON
-  const products: Product[] = productsData as Product[];
-  const product = products.find((p) => p.id === id);
+  // ✅ Загружаем JSON с сервера Vercel
+  useEffect(() => {
+    fetch("/products.json")
+      .then((res) => res.json())
+      .then((data: Product[]) => {
+        const found = data.find((p) => p.id === id);
+        setProduct(found || null);
+      })
+      .catch(() => setProduct(null))
+      .finally(() => setLoading(false));
+  }, [id]);
 
   const handleAddToCart = async () => {
     if (!product) return;
@@ -46,7 +54,10 @@ export default function Product() {
     setShowAddToCartModal(true);
   };
 
-  // 👉 если товар не найден
+  if (loading) {
+    return <div className="px-4 py-6 text-center">Загрузка товара…</div>;
+  }
+
   if (!product) {
     return (
       <div className="px-4 py-6 text-center">
@@ -59,17 +70,10 @@ export default function Product() {
   return (
     <div className="px-4 py-6">
       <div className="container mx-auto max-w-md">
-
-        {/* Кнопка назад */}
-        <button
-          onClick={() => setLocation("/")}
-          className="flex items-center space-x-2 mb-6 text-muted-foreground"
-        >
-          <ArrowLeft className="h-5 w-5" />
-          <span>Назад</span>
+        <button onClick={() => setLocation("/")} className="flex items-center space-x-2 mb-6">
+          <ArrowLeft className="h-5 w-5" /> <span>Назад</span>
         </button>
 
-        {/* Фото товара */}
         <div className="bg-card rounded-[20px] shadow-lg overflow-hidden mb-6">
           <img
             src={product.images[selectedImageIndex]}
@@ -91,7 +95,6 @@ export default function Product() {
           </div>
         </div>
 
-        {/* Информация о товаре */}
         <div className="bg-card rounded-[20px] shadow-lg p-6">
           <h1 className="text-2xl font-bold mb-2">{product.name}</h1>
           <p className="text-primary font-semibold mb-4">{formatPrice(product.price)}</p>
@@ -119,7 +122,6 @@ export default function Product() {
           <Button className="btn-primary w-full mb-3" onClick={handleAddToCart}>
             Добавить в корзину
           </Button>
-
           <Button
             variant="outline"
             className="w-full border-2 border-primary text-primary"
@@ -134,7 +136,6 @@ export default function Product() {
         </div>
       </div>
 
-      {/* Модалка добавления в корзину */}
       <Dialog open={showAddToCartModal} onOpenChange={setShowAddToCartModal}>
         <DialogContent className="max-w-md mx-auto">
           <DialogHeader className="text-center">
